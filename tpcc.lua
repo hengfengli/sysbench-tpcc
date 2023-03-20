@@ -23,11 +23,24 @@ require("tpcc_run")
 require("tpcc_check")
 
 function thread_init()
-   drv,con=db_connection_init()
+
+  drv = sysbench.sql.driver()
+  con = drv:connect()
+
+  set_isolation_level(drv,con)
+
+  if drv:name() == "mysql" then
+    con:query("SET autocommit=0")
+  end
+
+  if sysbench.cmdline.command == 'run' then
+    for i = 1, sysbench.opt.tables do
+      prepared_statements_for_run(i)
+    end
+   end
 end
 
 function event()
-  -- print( NURand (1023,1,3000))
   local max_trx =  sysbench.opt.enable_purge == "yes" and 24 or 23
   local trx_type = sysbench.rand.uniform(1,max_trx)
   if trx_type <= 10 then
@@ -45,7 +58,7 @@ function event()
   end
 
 -- Execute transaction
-   _G[trx]()
+  _G[trx]()
 
 end
 
@@ -54,12 +67,11 @@ function sysbench.hooks.before_restart_event(err)
 end
 
 function sysbench.hooks.report_intermediate(stat)
--- --   print("my stat: ", val)
-   if  sysbench.opt.report_csv == "yes" then
-   	sysbench.report_csv(stat)
-   else
-   	sysbench.report_default(stat)
-   end
+  if sysbench.opt.report_csv == "yes" then
+    sysbench.report_csv(stat)
+  else
+    sysbench.report_default(stat)
+  end
 end
 
 
