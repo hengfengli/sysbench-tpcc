@@ -1,21 +1,8 @@
 #!/usr/bin/env sysbench
 
--- This program is free software; you can redistribute it and/or modify
--- it under the terms of the GNU General Public License as published by
--- the Free Software Foundation; either version 2 of the License, or
--- (at your option) any later version.
-
--- This program is distributed in the hope that it will be useful,
--- but WITHOUT ANY WARRANTY; without even the implied warranty of
--- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
--- GNU General Public License for more details.
-
--- You should have received a copy of the GNU General Public License
--- along with this program; if not, write to the Free Software
--- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
-
 -- ----------------------------------------------------------------------
 -- TPCC-like workload
+-- https://github.com/Percona-Lab/sysbench-tpcc/releases/tag/v2.2
 -- ----------------------------------------------------------------------
 
 require("tpcc_common")
@@ -291,11 +278,7 @@ function new_order()
 --  AND c_d_id = :d_id
 --  AND c_id = :c_id;
 
-      con:query("BEGIN")
-      con:query("BEGIN")
-  end
   con:query("BEGIN")
-  end
 
   local c_discount
   local c_last
@@ -449,11 +432,7 @@ function payment()
 --  UPDATE warehouse SET w_ytd = w_ytd + :h_amount
 --  WHERE w_id =:w_id
 
-      con:query("BEGIN")
-      con:query("BEGIN")
-  end
   con:query("BEGIN")
-  end
 
   con:query(([[EXECUTE update_warehouse%d (%d,%d)]]):format(table_num, h_amount, w_id ))
 
@@ -588,11 +567,7 @@ function orderstatus()
     local c_balance
     local c_first
     local c_middle
-        con:query("BEGIN")
-        con:query("BEGIN")
-    end
     con:query("BEGIN")
-    end
 
     if byname == 1 then
 --    /*EXEC_SQL SELECT count(c_id)
@@ -699,13 +674,7 @@ function delivery()
     local w_id = sysbench.rand.uniform(1, sysbench.opt.scale)
     local o_carrier_id = sysbench.rand.uniform(1, 10)
 
-        con:query("BEGIN")
-        con:query("BEGIN")
-    end
-
     con:query("BEGIN")
-    end
-
     for  d_id = 1, DIST_PER_WARE do
 
 --  SELECT COALESCE(MIN(no_o_id),0) INTO :no_o_id
@@ -784,11 +753,7 @@ function stocklevel()
     local d_id = sysbench.rand.uniform(1, DIST_PER_WARE)
     local level = sysbench.rand.uniform(10, 20)
 
-        con:query("BEGIN")
-        con:query("BEGIN")
-    end
     con:query("BEGIN")
-    end
 
 --  /*EXEC_SQL SELECT d_next_o_id
 --                  FROM district
@@ -870,11 +835,7 @@ function purge()
     local w_id = sysbench.rand.uniform(1, sysbench.opt.scale)
     local d_id = sysbench.rand.uniform(1, DIST_PER_WARE)
 
-        con:query("BEGIN")
-        con:query("BEGIN")
-    end
     con:query("BEGIN")
-    end
 
         local m_o_id
 
